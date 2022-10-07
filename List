@@ -1,0 +1,155 @@
+package com.company;
+
+// Add(int)
+// Pop
+// boolean IsEmpty
+// int lenght
+
+class Node{
+    public int data;
+    public Node next;
+
+    public Node(int data) {
+        this.data = data;
+    }
+
+    public int getData() {
+        return data;
+    }
+
+    public void setData(int data) {
+        this.data = data;
+    }
+
+    public Node getNext() {
+        return next;
+    }
+
+    public void setNext(Node next) {
+        this.next = next;
+    }
+}
+
+public class List {
+    Node head;
+    Node current;
+    int count = 0;
+
+    public Node getHead() {
+        return head;
+    }
+
+    public void setHead(Node head) {
+        this.head = head;
+    }
+
+    public Node getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Node current) {
+        this.current = current;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int Length(){
+        return count;
+    }
+
+    public boolean IsEmpty(){
+        if (count == 0)
+            return true;
+        else
+            return false;
+    }
+
+    public void Add(int x){
+        Node node = new Node(x);
+        if (head == null){
+            head = node;
+        }
+        else {
+            current.next = node;
+        }
+        current = node;
+        count++;
+    }
+    public void Print(){
+        Node tmp = head;
+        while (tmp.next != null) {
+            System.out.print(tmp.getData() + " ");
+            tmp = tmp.next;
+        }
+        System.out.println();
+    }
+
+    public void Pop(){
+        if (head != null){
+            Node tmp = head;
+            head = tmp.next;
+            count--;
+        }
+        else
+            System.out.printf("List is empty!");
+    }
+
+
+}
+
+
+
+package com.company;
+
+import java.util.Random;
+
+public class Main {
+
+    public static void main(String[] args) {
+        List example = new List();
+        Random rnd = new Random();
+        for (int i = 0; i < 10; i++) {
+            example.Add(rnd.nextInt(15));
+        }
+        example.Print();
+        System.out.println(example.Length());
+        int[] arr = new int[10];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = rnd.nextInt(10000);
+            System.out.print(arr[i] + " ");
+        }
+    }
+
+    public List BitWiseSort(int[] arr){
+        List[] list = new List[arr.length];
+        for (int i = 0; i < list.length; i++) {
+            list[i] = new List();
+        }
+        int max = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (max < arr[i])
+                max = arr[i];
+        }
+        int max_bit = String.valueOf(max).length();
+        int rest = 10;
+        for (int i = 0; i < max_bit; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                list[arr[j] % rest / (rest / 10)].Add(arr[j]);
+            }
+            for (int n = 0; n < list.length; n++) {
+                while (!list[n].)
+            }
+        }
+        rest *= 10;
+        int k = 0;
+        for (int i = 0; i < list.length; i++) {
+            while (!list[])
+        }
+    }
+}
