@@ -1,0 +1,223 @@
+package ForHomeWork.Function;
+import java.util.*;
+
+public class NewMain {
+    @FunctionalInterface
+    interface Function {
+        double f(double k);
+    }
+
+    @FunctionalInterface
+    interface Metod {
+        double[] METOD(double a, double b, double eps, double vid);
+    }
+
+    public static void main(String[] args) {
+        Scanner inp = new Scanner(System.in);
+        Function f =null;
+        Metod m = null;
+        Metod m1 = null;
+        Metod m2 = null;
+        Metod m3 = null;
+        int[] itr = new int[3];
+        boolean flag = true;
+        double[] koef = new double[5];
+        double[] mg = new double[6];
+        while (flag) {
+            System.out.println("Введите вид функции: 1 - f(x)=6*x^2+5*x-1, 2 - f(x)=cos(x), 3 - f(x)=x^4-(25/x),  0 - Exit ");
+            koef[4] = inp.nextDouble();
+
+            if (koef[4] == 0) {
+                flag = false;
+                break;
+            }
+
+            System.out.println("Выберите метод, 1 - метод деления отрезка попалам, 2 - метод хорд, 3 - метод касательных, 4 - лучший метод для решения уравнения");
+            int metod = inp.nextInt();
+            System.out.printf("Введите а = ");
+            koef[0] = inp.nextDouble();
+            System.out.printf("Введите b = ");
+            koef[1] = inp.nextDouble();
+            System.out.printf("Введите eps = ");
+            koef[2] = inp.nextDouble();
+
+            switch (metod) {
+                case 0:
+                    flag = false;
+                    break;
+                case 1:
+                    f=(x)-> fun(x,koef[4]);
+                    if(f.f(koef[0])*f.f(koef[1])<0){
+                        m = NewMain::delotr;
+                        mg[0] = m.METOD(koef[0], koef[1], koef[2], koef[4])[0];
+                        System.out.println("Метод деления отрезка пополам x= " + mg[0]);
+                        itr[0] = (int) m.METOD(koef[0], koef[1], koef[2], koef[4])[1];
+                        System.out.println("Итерации методом отрезка пополам= " + itr[0]);
+                    } else {
+                        System.out.println("Задайте концы отрезка, на которых функция имеет разные знаки");
+                    }
+                    break;
+
+                case 2:
+                    f=(x)-> fun(x,koef[4]);
+                    if(f.f(koef[0])*f.f(koef[1])<0){
+                        m = NewMain::hord;
+                        mg[1] = m.METOD(koef[0], koef[1], koef[2], koef[4])[0];
+                        System.out.println("Метод хорд x= " + mg[1]);
+                        itr[1] = (int) m.METOD(koef[0], koef[1], koef[2], koef[4])[1];
+                        System.out.println("Итерации методом хорд =  " + itr[1]);
+                    } else {
+                        System.out.println("Задайте концы отрезка, на которых функция имеет разные знаки");
+                    }
+                    break;
+
+                case 3:
+                    f=(x)-> fun(x,koef[4]);
+                    if(f.f(koef[0])*f.f(koef[1])<0){
+                        m = NewMain::kasat;
+                        mg[2] = m.METOD(koef[0], koef[1], koef[2], koef[4])[0];
+                        System.out.println("Метод касательных x= " + mg[2]);
+                        itr[2] = (int) m.METOD(koef[0], koef[1], koef[2], koef[4])[1];
+                        System.out.println("Итерации методом касательных =  " + itr[2]);
+                        alliter(itr[0], itr[1], itr[2]);
+                    }else {
+                        System.out.println("Задайте концы отрезка, на которых функция имеет разные знаки");
+                    }
+                    break;
+
+                case 4:
+                    f=(x)-> fun(x,koef[4]);
+                    if(f.f(koef[0])*f.f(koef[1])<0){
+                        m1 = NewMain::delotr;
+                        m2 = NewMain::hord;
+                        m3 = NewMain::kasat;
+
+                        mg[3] = m1.METOD(koef[0], koef[1], koef[2], koef[4])[0];
+                        System.out.println("Метод деления отрезка пополам x= " + mg[3]);
+                        itr[0] = (int) m1.METOD(koef[0], koef[1], koef[2], koef[4])[1];
+                        System.out.println("Итерации методом отрезка пополам= " + itr[0]);
+
+                        mg[4] = m2.METOD(koef[0], koef[1], koef[2], koef[4])[0];
+                        System.out.println("Метод хорд x= " + mg[4]);
+                        itr[1] = (int) m2.METOD(koef[0], koef[1], koef[2], koef[4])[1];
+                        System.out.println("Итерации методом хорд =  " + itr[1]);
+
+                        mg[5] = m3.METOD(koef[0], koef[1], koef[2], koef[4])[0];
+                        System.out.println("Метод касательных x= " + mg[5]);
+                        itr[2] = (int) m3.METOD(koef[0], koef[1], koef[2], koef[4])[1];
+                        System.out.println("Итерации методом касательных =  " + itr[2]);
+                        alliter(itr[0], itr[1], itr[2]);
+
+                    } else {
+                        System.out.println("Задайте концы отрезка, на которых функция имеет разные знаки");
+                    }
+                    break;
+            }
+
+        }
+    }
+
+    public static int alliter(int iterdel, int iterhord, int iterkasat) {
+        int niceiter = 0;
+        if (iterdel < iterhord && iterdel < iterkasat) {
+            niceiter = iterdel;
+            System.out.println("Метод деления отрезка пополам быстрее ");
+        } else if (iterhord < iterdel && iterhord < iterkasat) {
+            niceiter = iterhord;
+            System.out.println("Метод хорд быстрее ");
+        } else if (iterkasat < iterdel && iterkasat < iterhord) {
+            niceiter = iterkasat;
+            System.out.println("Метод касательных быстрее ");
+        }
+        return niceiter;
+    }
+
+    public static double[] delotr(double a, double b, double eps, double vid) {
+        double[] ret = new double[2];
+        int iter = 0;
+        while (Math.abs(b - a) > eps) {
+            double c = (a + b) / 2;
+            if (fun(c, vid) * fun(a, vid) < 0) {
+                b = c;
+            } else if (fun(c, vid) * fun(a, vid) > 0) {
+                a = c;
+            } else if (fun(c, vid) == 0) {
+                ret[0] = c;
+                return ret;
+            }
+            iter++;
+        }
+        ret[0] = (a + b) / 2;
+        ret[1] = iter;
+        return ret;
+    }
+
+    public static double[] hord(double a, double b, double eps, double vid) {
+        double[] ret = new double[2];
+        int iter = 0;
+        double x_next = fun(a, vid);
+        double tmp;
+        do {
+            tmp = x_next;
+            x_next = b - (fun(b, vid) * (b - a)) / ((fun(b, vid) - fun(a, vid)));
+            a = b;
+            b = tmp;
+            iter++;
+        } while (Math.abs(x_next - b) > eps);
+        ret[0] = x_next;
+        ret[1] = iter;
+        return ret;
+    }
+
+
+    public static double[] kasat(double a, double b, double eps, double vid) {
+        double[] ret = new double[2];
+        double r = (a + b) / 2;
+        int iter = 0;
+        while (Math.abs(fun(r, vid)) > eps) {
+            r = r - fun(r, vid) / dfun(r, vid);
+            iter++;
+        }
+        ret[0] = r;
+        ret[1] = iter;
+        return ret;
+    }
+
+    public static double fun(double x, double switchfun) {
+        double ff = 0;
+        switch ((int) switchfun) {
+            case 1:
+                ff = 6 * x * x + 5 * x - 1;
+                break;
+            case 2:
+                ff = Math.cos(x);
+                break;
+            case 3:
+                ff = Math.pow(x, 4) - (25 / x);
+                break;
+        }
+        return ff;
+    }
+
+
+    private static double dfun(double x, double switchfun) {
+        double df = 0;
+        switch ((int) switchfun) {
+            case 1:
+                df = 12 * x + 5;
+                break;
+            case 2:
+                df = -Math.sin(x);
+                break;
+            case 3:
+                df = (4 * Math.pow(x, 5) + 25) / x * x;
+                break;
+        }
+        return df;
+    }
+
+}
+
+
+
+
