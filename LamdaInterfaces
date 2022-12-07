@@ -203,7 +203,7 @@ public class NewMain {
                 df = -Math.sin(x);
                 break;
             case 3:
-                df = (5 * Math.pow(x, 4)) + (25 / x * x);
+                df = (5 * Math.pow(x, 4)) + (14 / x * x);
                 break;
         }
         return df;
